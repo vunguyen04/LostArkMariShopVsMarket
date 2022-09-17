@@ -22,7 +22,7 @@ public class Database{
     }
 
 
-    public void query(JComboBox list) {
+    public void putItemIntoDropBox(JComboBox list) {
         try {
 
             String selectItemName = "SELECT item_name FROM lostarkmari";
@@ -65,5 +65,34 @@ public class Database{
             e.printStackTrace();
         }
         return 1;
+    }
+
+    public int putItemIntoDatabase(String itemName, int itemAmount, int itemCost){
+        try {
+            String selectItemName = "INSERT INTO lostarkmari(item_name,item_amount,item_crystal_cost) VALUES(\'" + itemName + "\'," + itemAmount + "," + itemCost + ");";
+            stat.executeUpdate(selectItemName);
+            return 1;
+        }catch(Exception e){
+            try {
+                String selectItemName = "UPDATE lostarkmari SET item_amount = " + itemAmount + ", item_crystal_cost = " + itemCost + " WHERE item_name =\'" + itemName + "\';";
+                stat.executeUpdate(selectItemName);
+                return 2;
+            }
+            catch (Exception e1){
+                return 3;
+            }
+
+        }
+    }
+
+    public boolean deleteItemFromDatabase(String itemName){
+        try{
+            String selectItemName = "DELETE FROM lostarkmari WHERE item_name =\'"+itemName+"\';";
+            stat.executeUpdate(selectItemName);
+            return true;
+        }catch(Exception e){
+            return false;
+        }
+
     }
 }
